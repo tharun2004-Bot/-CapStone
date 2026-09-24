@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CareerRAG — Find your path</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  header.hero{padding:72px 0 96px; display:grid; grid-template-columns:1.1fr 0.9fr; gap:48px; align-items:center;}
+  .eyebrow{color:var(--violet-dark); font-weight:600; font-size:14px; margin-bottom:16px;}
+  h1{font-size:52px; line-height:1.08; font-weight:700; letter-spacing:-0.5px; margin-bottom:22px;}
+  .hero p.lede{font-size:17px; color:var(--slate); max-width:460px; margin-bottom:32px;}
+  .hero-cta{display:flex; gap:14px; margin-bottom:28px;}
+  .trust{font-size:13px; color:var(--slate);}
+
+  .path-card{background:var(--ink); border-radius:18px; padding:36px 30px;}
+  .path-card h3{color:#fff; font-size:15px; font-weight:600; margin-bottom:22px;}
+  .node-row{display:flex; align-items:center; margin-bottom:4px;}
+  .node{width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:#14122B; flex-shrink:0;}
+  .node.done{background:var(--teal);}
+  .node.now{background:var(--amber); box-shadow:0 0 0 4px rgba(255,182,39,0.25);}
+  .node.next{background:#2C2A48; color:var(--slate); border:1px solid #3d3a5c;}
+  .node-label{margin-left:14px; color:#D8D6EA; font-size:14px;}
+  .node-label small{display:block; color:#8482A6; font-size:12px; margin-top:2px;}
+  .connector{width:2px; height:22px; background:#3d3a5c; margin-left:16px;}
+
+  section{padding:64px 0;}
+  .section-head{max-width:560px; margin-bottom:44px;}
+  h2{font-size:32px; font-weight:700; letter-spacing:-0.3px;}
+  .section-head p{color:var(--slate); margin-top:12px; font-size:15px;}
+
+  .feature-row{display:grid; grid-template-columns:220px 1fr; gap:28px; padding:26px 0; border-top:1px solid var(--line);}
+  .feature-row:last-child{border-bottom:1px solid var(--line);}
+  .feature-num{font-family:'Space Grotesk',sans-serif; font-weight:600; color:var(--violet);}
+  .feature-row h3{font-size:19px; margin-bottom:8px;}
+  .feature-row p{color:var(--slate); font-size:15px; max-width:520px;}
+
+  .cta-band{background:var(--violet); border-radius:20px; padding:52px 48px; display:flex; align-items:center; justify-content:space-between; gap:24px; margin:24px 0 80px;}
+  .cta-band h2{color:#fff; font-size:28px; max-width:420px;}
+  .cta-band .btn-solid{background:#fff; color:var(--violet-dark);}
+  .cta-band .btn-solid:hover{background:var(--amber); color:var(--ink);}
+
+  footer{border-top:1px solid var(--line); padding:28px 0; font-size:13px; color:var(--slate); display:flex; justify-content:space-between;}
+
+  @media(max-width:820px){
+    header.hero{grid-template-columns:1fr;}
+    h1{font-size:38px;}
+    .feature-row{grid-template-columns:1fr;}
+    .cta-band{flex-direction:column; text-align:center;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <div class="brand"><span class="brand-dot"></span>CareerRAG</div>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#features">What it does</a>
+      <a id="navAuthLink" href="login.html">Log in</a>
+    </div>
+    <a id="navCta" href="login.html" class="btn btn-solid">Get started</a>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <div class="eyebrow">AI career guidance, grounded in real data</div>
+      <h1>Your next career move, mapped step by step.</h1>
+      <p class="lede">CareerRAG reads your resume, skills, and goals, then retrieves real job, course, and placement data to tell you exactly what to learn next — and why.</p>
+      <div class="hero-cta">
+        <a id="heroCta" href="login.html" class="btn btn-primary">Start mapping my path</a>
+        <a href="dashboard.html" class="btn btn-ghost">See a live example</a>
+      </div>
+      <div class="trust">Built for students, career switchers, and campus placement cells.</div>
+    </div>
+
+    <div class="path-card" id="heroPath">
+      <h3 id="heroPathTitle">Your skill path — Data Analyst</h3>
+      <div id="heroPathList"></div>
+    </div>
+  </header>
+
+  <section id="how">
+    <div class="section-head">
+      <div class="eyebrow">How it works</div>
+      <h2>Three steps, not a quiz.</h2>
+      <p>No generic personality test — CareerRAG retrieves from live job listings, course catalogs, and placement outcomes to ground every suggestion.</p>
+    </div>
+    <div class="feature-row">
+      <div class="feature-num">01</div>
+      <div><h3>Tell it where you are</h3><p>Upload a resume or describe your background. CareerRAG extracts your current skills and experience level.</p></div>
+    </div>
+    <div class="feature-row">
+      <div class="feature-num">02</div>
+      <div><h3>It retrieves, not guesses</h3><p>Skill gaps are matched against real job descriptions and course content using retrieval-augmented generation — every recommendation cites its source.</p></div>
+    </div>
+    <div class="feature-row">
+      <div class="feature-num">03</div>
+      <div><h3>You get a placement-ready plan</h3><p>A sequenced roadmap of skills, projects, and mock interviews, tracked until you're ready to apply.</p></div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="cta-band">
+      <h2>Stop guessing what to learn next.</h2>
+      <a id="ctaBandBtn" href="login.html" class="btn btn-solid">Create your free account</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 CareerRAG</span>
+    <span>Skill mapping · Placement assistance · Built with RAG</span>
+  </footer>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/chat.js"></script>
+<script>
+  // Reflect logged-in state in the nav, and render live skill-path data in the hero.
+  const session = CareerRAG.getSession();
+  if (session) {
+    document.getElementById("navAuthLink").textContent = "Log out";
+    document.getElementById("navAuthLink").href = "#";
+    document.getElementById("navAuthLink").onclick = (e) => { e.preventDefault(); CareerRAG.logout(); };
+    document.getElementById("navCta").textContent = "Go to dashboard";
+    document.getElementById("navCta").href = "dashboard.html";
+    document.getElementById("heroCta").textContent = "Continue my path";
+    document.getElementById("heroCta").href = "dashboard.html";
+    document.getElementById("ctaBandBtn").textContent = "Go to dashboard";
+    document.getElementById("ctaBandBtn").href = "dashboard.html";
+  }
+
+  const path = SkillPath.get();
+  document.getElementById("heroPathTitle").textContent = "Your skill path — " + path.track;
+  const list = document.getElementById("heroPathList");
+  path.skills.forEach((skill, i) => {
+    if (i > 0) {
+      const c = document.createElement("div");
+      c.className = "connector";
+      list.appendChild(c);
+    }
+    const row = document.createElement("div");
+    row.className = "node-row";
+    const dot = document.createElement("div");
+    dot.className = "node " + skill.status;
+    dot.textContent = skill.status === "done" ? "✓" : skill.status === "now" ? "●" : String(i + 1);
+    const label = document.createElement("div");
+    label.className = "node-label";
+    const tag = skill.status === "done" ? "Completed" : skill.status === "now" ? "In progress" : "Recommended next";
+    label.innerHTML = skill.name + "<small>" + tag + "</small>";
+    row.appendChild(dot);
+    row.appendChild(label);
+    list.appendChild(row);
+  });
+</script>
+</body>
+</html>
