@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log in — CareerRAG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  body{
+    min-height:100vh;
+    color:#F8F6EE;
+    overflow-x:hidden;
+    background:
+      linear-gradient(118deg, rgba(22,195,168,.24) 0 18%, transparent 18% 58%, rgba(255,182,39,.17) 58% 78%, transparent 78%),
+      linear-gradient(135deg, #0A0F1F 0%, #17263B 45%, #23163A 100%);
+  }
+
+  .screen{
+    position:relative;
+    min-height:100vh;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(420px,520px);
+    overflow:hidden;
+    isolation:isolate;
+  }
+
+  .screen::before,
+  .screen::after{
+    content:"";
+    position:absolute;
+    inset:-18% -10%;
+    z-index:-3;
+    opacity:.86;
+    animation:auroraFlow 18s ease-in-out infinite alternate;
+  }
+
+  .screen::before{
+    background:
+      conic-gradient(from 115deg at 28% 48%, transparent 0 12%, rgba(21,184,166,.34) 18%, transparent 28% 44%, rgba(255,182,39,.28) 52%, transparent 64% 100%),
+      conic-gradient(from 265deg at 72% 54%, transparent 0 18%, rgba(108,92,231,.34) 28%, transparent 42% 60%, rgba(255,111,97,.24) 72%, transparent 84% 100%);
+    filter:blur(28px) saturate(1.3);
+  }
+
+  .screen::after{
+    inset:-6%;
+    z-index:-2;
+    background:
+      repeating-linear-gradient(118deg, rgba(255,255,255,.08) 0 1px, transparent 1px 78px),
+      repeating-linear-gradient(28deg, rgba(255,255,255,.06) 0 1px, transparent 1px 96px);
+    -webkit-mask-image:linear-gradient(90deg, rgba(0,0,0,.8), rgba(0,0,0,.16));
+    mask-image:linear-gradient(90deg, rgba(0,0,0,.8), rgba(0,0,0,.16));
+    animation:gridDrift 26s linear infinite;
+  }
+
+  .side{
+    position:relative;
+    min-height:100vh;
+    padding:48px clamp(30px,5vw,76px);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+
+  .brand{
+    position:relative;
+    z-index:2;
+    color:#fff;
+    text-shadow:0 12px 35px rgba(0,0,0,.28);
+  }
+
+  .brand-dot{
+    background:linear-gradient(135deg, #16C3A8, #FFB627);
+    box-shadow:0 0 24px rgba(22,195,168,.75);
+  }
+
+  .hero-copy{
+    position:relative;
+    z-index:2;
+    width:min(560px,100%);
+  }
+
+  .hero-kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:18px;
+    color:#BFEFE7;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0;
+    text-transform:uppercase;
+  }
+
+  .hero-kicker::before{
+    content:"";
+    width:38px;
+    height:2px;
+    background:#FFB627;
+    box-shadow:0 0 18px rgba(255,182,39,.65);
+  }
+
+  .side h2{
+    font-size:60px;
+    line-height:.96;
+    font-weight:700;
+    max-width:650px;
+    margin-bottom:20px;
+    text-wrap:balance;
+  }
+
+  .side p{
+    color:#D8E7EA;
+    font-size:16px;
+    max-width:460px;
+  }
+
+  .motion-stage{
+    position:absolute;
+    inset:11% 7% 12% 4%;
+    z-index:-1;
+    pointer-events:none;
+  }
+
+  .ribbon{
+    position:absolute;
+    left:8%;
+    right:5%;
+    height:150px;
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:50%;
+    transform:rotate(var(--tilt));
+    filter:drop-shadow(0 22px 28px rgba(0,0,0,.18));
+    animation:ribbonPulse 9s ease-in-out infinite;
+  }
+
+  .ribbon:nth-child(1){
+    top:26%;
+    --tilt:-13deg;
+    border-color:rgba(22,195,168,.46);
+    animation-delay:-1s;
+  }
+
+  .ribbon:nth-child(2){
+    top:38%;
+    --tilt:9deg;
+    border-color:rgba(255,182,39,.42);
+    animation-delay:-3s;
+  }
+
+  .ribbon:nth-child(3){
+    top:50%;
+    --tilt:-4deg;
+    border-color:rgba(255,255,255,.28);
+    animation-delay:-5s;
+  }
+
+  .spark-field{
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(90deg, rgba(255,255,255,.72) 0 2px, transparent 2px),
+      linear-gradient(90deg, rgba(191,239,231,.8) 0 2px, transparent 2px),
+      linear-gradient(90deg, rgba(255,182,39,.8) 0 2px, transparent 2px);
+    background-size:2px 2px, 2px 2px, 2px 2px;
+    background-position:14% 22%, 48% 68%, 78% 34%;
+    background-repeat:no-repeat;
+    animation:sparkShift 7s steps(2,end) infinite;
+  }
+
+  .quote{
+    position:relative;
+    z-index:2;
+    max-width:520px;
+    background:rgba(9,14,28,.44);
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:8px;
+    padding:22px 24px;
+    font-size:14px;
+    color:#E8EEF1;
+    box-shadow:0 24px 70px rgba(0,0,0,.28);
+    backdrop-filter:blur(18px);
+  }
+
+  .quote b{color:#FFCC68; font-family:'Space Grotesk',sans-serif;}
+
+  .form-side{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px clamp(20px,4vw,56px);
+    background:linear-gradient(90deg, rgba(7,11,22,.06), rgba(8,12,24,.62));
+  }
+
+  .form-box{
+    width:100%;
+    max-width:390px;
+    position:relative;
+    background:rgba(255,255,255,.13);
+    border:1px solid rgba(255,255,255,.28);
+    border-radius:8px;
+    padding:30px;
+    box-shadow:0 30px 90px rgba(0,0,0,.34);
+    backdrop-filter:blur(22px);
+  }
+
+  .form-box::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    border:1px solid rgba(255,255,255,.12);
+    pointer-events:none;
+  }
+
+  .form-box h1{font-size:28px; margin-bottom:6px; color:#fff;}
+  .form-box .sub{color:#D5DEE5; font-size:14px; margin-bottom:28px;}
+
+  .tabs{
+    display:flex;
+    border:1px solid rgba(255,255,255,.24);
+    border-radius:8px;
+    padding:4px;
+    margin-bottom:26px;
+    background:rgba(0,0,0,.18);
+  }
+
+  .tabs button{
+    flex:1;
+    min-height:38px;
+    padding:9px;
+    border:none;
+    background:none;
+    font-size:14px;
+    font-weight:700;
+    color:#C9D4DC;
+    border-radius:6px;
+    cursor:pointer;
+    font-family:inherit;
+  }
+
+  .tabs button.active{
+    background:linear-gradient(135deg, #16C3A8, #6C5CE7);
+    color:#fff;
+    box-shadow:0 12px 26px rgba(22,195,168,.22);
+  }
+
+  label{display:block; font-size:13px; font-weight:700; margin-bottom:6px; margin-top:16px; color:#F8F6EE;}
+
+  input{
+    width:100%;
+    min-height:44px;
+    padding:11px 13px;
+    border:1px solid rgba(255,255,255,.24);
+    border-radius:8px;
+    font-size:14px;
+    font-family:inherit;
+    color:#fff;
+    background:rgba(4,8,18,.38);
+  }
+
+  input::placeholder{color:#AEBCC8;}
+  input:focus{outline:2px solid rgba(22,195,168,.74); outline-offset:1px; border-color:rgba(22,195,168,.9);}
+
+  .row-between{display:flex; justify-content:space-between; align-items:center; gap:14px; font-size:13px; margin-top:16px; color:#D7E3EA;}
+  .row-between label{margin:0; font-weight:500; display:flex; align-items:center; gap:6px;}
+  .row-between a{color:#FFCC68; white-space:nowrap;}
+
+  button.btn-primary{
+    width:100%;
+    margin-top:24px;
+    padding:13px;
+    border-radius:8px;
+    font-size:15px;
+    background:linear-gradient(135deg, #16C3A8, #6C5CE7 62%, #FF6F61);
+    box-shadow:0 16px 34px rgba(22,195,168,.22);
+  }
+
+  button.btn-primary:hover{filter:brightness(1.06);}
+
+  .divider{display:flex; align-items:center; gap:12px; margin:22px 0; color:#C6D3DB; font-size:12px;}
+  .divider::before,.divider::after{content:""; flex:1; height:1px; background:rgba(255,255,255,.22);}
+
+  .btn-alt{
+    width:100%;
+    min-height:42px;
+    padding:11px;
+    border:1px solid rgba(255,255,255,.23);
+    border-radius:8px;
+    background:rgba(255,255,255,.1);
+    color:#fff;
+    font-size:14px;
+    font-weight:700;
+    margin-bottom:10px;
+  }
+
+  .btn-alt:hover{background:rgba(255,255,255,.18);}
+
+  .footline{text-align:center; font-size:12px; color:#BBC8D0; margin-top:22px;}
+  #signupPanel{display:none;}
+  .error{display:none; background:rgba(253,236,236,.96); color:var(--err); font-size:13px; padding:10px 12px; border-radius:8px; margin-top:16px;}
+  .success{display:none; background:rgba(234,247,242,.96); color:#0F8C77; font-size:13px; padding:10px 12px; border-radius:8px; margin-top:16px;}
+
+  @keyframes auroraFlow{
+    0%{transform:translate3d(-2%, -1%, 0) rotate(-2deg) scale(1);}
+    100%{transform:translate3d(3%, 2%, 0) rotate(3deg) scale(1.06);}
+  }
+
+  @keyframes gridDrift{
+    0%{transform:translate3d(0,0,0);}
+    100%{transform:translate3d(-80px,48px,0);}
+  }
+
+  @keyframes ribbonPulse{
+    0%,100%{transform:translate3d(0,0,0) rotate(var(--tilt)) scaleX(1); opacity:.62;}
+    50%{transform:translate3d(2%, -8px, 0) rotate(calc(var(--tilt) + 2deg)) scaleX(1.05); opacity:1;}
+  }
+
+  @keyframes sparkShift{
+    0%,100%{background-position:14% 22%, 48% 68%, 78% 34%; opacity:.65;}
+    50%{background-position:22% 30%, 58% 60%, 70% 42%; opacity:1;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .screen::before,.screen::after,.ribbon,.spark-field{animation:none;}
+  }
+
+  @media(max-width:920px){
+    .screen{grid-template-columns:1fr; min-height:100vh;}
+    .side{display:none;}
+    .form-side{min-height:100vh; background:rgba(7,11,22,.28);}
+    .form-box{padding:26px 22px;}
+  }
+
+  @media(max-width:1180px){
+    .side h2{font-size:48px;}
+  }
+</style>
+</head>
+<body>
+<div class="screen">
+  <div class="side">
+    <div class="brand"><span class="brand-dot"></span>CareerRAG</div>
+    <div class="motion-stage" aria-hidden="true">
+      <span class="ribbon"></span>
+      <span class="ribbon"></span>
+      <span class="ribbon"></span>
+      <span class="spark-field"></span>
+    </div>
+    <div class="hero-copy">
+      <div class="hero-kicker">Live career intelligence</div>
+      <h2>Grounded guidance in motion.</h2>
+      <p>Every recommendation is retrieved from real job listings, course data, and placement outcomes.</p>
+    </div>
+    <div class="quote">"Went from unsure what role to target to a <b>3-step plan</b> with a placement track record in under 10 minutes."</div>
+  </div>
+
+  <div class="form-side">
+    <div class="form-box">
+      <div class="tabs">
+        <button id="tabLogin" class="active" onclick="showPanel('login')" type="button">Log in</button>
+        <button id="tabSignup" onclick="showPanel('signup')" type="button">Sign up</button>
+      </div>
+
+      <div id="loginPanel">
+        <h1>Welcome back</h1>
+        <div class="sub">Log in to pick up your skill path.</div>
+        <form id="loginForm">
+          <label for="loginEmail">Email</label>
+          <input id="loginEmail" type="email" required placeholder="you@example.com">
+          <label for="loginPass">Password</label>
+          <input id="loginPass" type="password" required placeholder="••••••••">
+          <div class="row-between">
+            <label><input type="checkbox" style="width:auto"> Remember me</label>
+            <a href="#">Forgot password?</a>
+          </div>
+          <div class="error" id="loginError"></div>
+          <button class="btn btn-primary" type="submit">Log in</button>
+        </form>
+      </div>
+
+      <div id="signupPanel">
+        <h1>Create your account</h1>
+        <div class="sub">Start mapping your career path in minutes.</div>
+        <form id="signupForm">
+          <label for="suName">Full name</label>
+          <input id="suName" type="text" required placeholder="Jordan Lee">
+          <label for="suEmail">Email</label>
+          <input id="suEmail" type="email" required placeholder="you@example.com">
+          <label for="suPass">Password</label>
+          <input id="suPass" type="password" required minlength="8" placeholder="At least 8 characters">
+          <div class="error" id="signupError"></div>
+          <button class="btn btn-primary" type="submit">Create account</button>
+        </form>
+      </div>
+
+      <div class="success" id="demoNote"></div>
+      <div class="divider">or continue with</div>
+      <button class="btn btn-alt" type="button">Continue with Google</button>
+      <button class="btn btn-alt" type="button">Continue with college SSO</button>
+
+      <div class="footline">By continuing you agree to CareerRAG's Terms and Privacy Policy.</div>
+    </div>
+  </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script>
+function showPanel(which){
+  document.getElementById('loginPanel').style.display = which==='login' ? 'block':'none';
+  document.getElementById('signupPanel').style.display = which==='signup' ? 'block':'none';
+  document.getElementById('tabLogin').classList.toggle('active', which==='login');
+  document.getElementById('tabSignup').classList.toggle('active', which==='signup');
+}
+
+document.getElementById('loginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const errBox = document.getElementById('loginError');
+  const result = CareerRAG.login({
+    email: document.getElementById('loginEmail').value.trim(),
+    password: document.getElementById('loginPass').value,
+  });
+  if (!result.ok) {
+    errBox.textContent = result.error;
+    errBox.style.display = 'block';
+    return;
+  }
+  window.location.href = 'dashboard.html';
+});
+
+document.getElementById('signupForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const errBox = document.getElementById('signupError');
+  const password = document.getElementById('suPass').value;
+  if (password.length < 8) {
+    errBox.textContent = 'Password needs to be at least 8 characters.';
+    errBox.style.display = 'block';
+    return;
+  }
+  const result = CareerRAG.signup({
+    name: document.getElementById('suName').value.trim(),
+    email: document.getElementById('suEmail').value.trim(),
+    password,
+  });
+  if (!result.ok) {
+    errBox.textContent = result.error;
+    errBox.style.display = 'block';
+    return;
+  }
+  window.location.href = 'dashboard.html';
+});
+
+// If already logged in, skip straight to the dashboard.
+if (CareerRAG.getSession()) {
+  window.location.href = 'dashboard.html';
+}
+</script>
+</body>
+</html>
